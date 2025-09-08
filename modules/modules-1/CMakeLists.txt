@@ -9,7 +9,7 @@ add_library(primes1_lib)
 target_sources(primes1_lib
   PUBLIC
     FILE_SET CXX_MODULES FILES
-    primes.cxx
+        primes.cppm
 )
 
 add_executable(primes1 primes_main.cpp)

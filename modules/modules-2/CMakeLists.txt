@@ -14,7 +14,7 @@ target_sources(primes2_lib
 
 target_sources(primes2_lib 
   PRIVATE
-    primes.cpp
+        primes.cpp
 )
 
 add_executable(primes2 primes_main.cpp)
