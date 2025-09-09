@@ -185,3 +185,20 @@ TEST_CASE("traits that transform a type")
         static_assert(std::is_same_v<RemoveReference_t<int&&>, int>);
     }
 }
+
+std::invocable auto create_generator(std::integral auto seed)
+{
+    auto gen = [seed]() mutable { return ++seed; };
+    return gen;
+}
+
+TEST_CASE("using generator")
+{
+    auto gen_100 = create_generator(100UL);
+
+    CHECK(gen_100() == 101);
+    CHECK(gen_100() == 102);
+
+    auto evil_gen = create_generator(665);
+    CHECK(evil_gen() == 666);
+}
