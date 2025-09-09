@@ -236,6 +236,9 @@ concept LeanPointer = Pointer<T> && (sizeof(T) == sizeof(void*));
 static_assert(LeanPointer<int*>);
 static_assert(!LeanPointer<std::shared_ptr<int>>);
 
+/////////////////////////////////////////////////////////
+// type requirements
+
 struct A
 {
     struct B
@@ -263,9 +266,27 @@ struct Data
     }
 };
 
+///////////////////////////////////////////////////////////
+// compound requirements
+
 template <typename T>
 concept HasSize = requires(const T& obj) {
     { obj.size() } noexcept -> std::convertible_to<size_t>; 
 };
 
 static_assert(HasSize<Data>);
+
+////////////////////////////////////
+// std concepts
+
+struct Person
+{
+    Person(int id = -1) {}
+};
+
+void foo(int n) {}
+
+static_assert(std::same_as<int, int>);
+static_assert(std::convertible_to<char, int>);
+static_assert(std::default_initializable<Person>);
+static_assert(std::invocable<decltype(foo), int>);
