@@ -47,16 +47,38 @@ constexpr bool IsSame_v = IsSame<T1, T2>::value;
 //////////////////////////////////
 // IsVoid trait
 
-template<typename T>
-struct IsVoid{
-    static constexpr bool value = false;
+// template<typename T>
+// struct IsVoid{
+//     static constexpr bool value = false;
+// };
+
+// template<>
+// struct IsVoid<void>
+// { 
+//     static constexpr bool value = true;
+// };
+
+template <typename T, T v>
+struct IntegralConstant
+{
+    constexpr static T value = v;
 };
 
+static_assert(IntegralConstant<int, 5>::value == 5);
+
+template <bool v>
+using BooleanConstant = IntegralConstant<bool, v>;
+
+static_assert(BooleanConstant<true>::value == true);
+
+using FalseType = BooleanConstant<false>;
+using TrueType = BooleanConstant<true>;
+
+template<typename T>
+struct IsVoid : std::false_type {};
+
 template<>
-struct IsVoid<void>
-{ 
-    static constexpr bool value = true;
-};
+struct IsVoid<void> : std::true_type {};
 
 template <typename T>
 constexpr bool IsVoid_v = IsVoid<T>::value;
