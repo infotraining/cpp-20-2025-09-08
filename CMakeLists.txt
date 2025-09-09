@@ -11,6 +11,12 @@ if(DEFINED ENV{VCPKG_DEFAULT_TRIPLET} AND NOT DEFINED VCPKG_TARGET_TRIPLET)
   set(VCPKG_TARGET_TRIPLET "$ENV{VCPKG_DEFAULT_TRIPLET}" CACHE STRING "")
 endif()
 
+if (DEFINED CMAKE_TOOLCHAIN_FILE)
+  message(STATUS "Vcpkg integration script found: " ${CMAKE_TOOLCHAIN_FILE})
+else()
+  message(STATUS "Vcpkg integration script NOT found!")
+endif()
+
 project(cpp-20 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)

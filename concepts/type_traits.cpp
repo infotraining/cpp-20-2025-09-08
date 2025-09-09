@@ -1,0 +1,26 @@
+#include <catch2/catch_test_macros.hpp>
+#include <memory>
+#include <string>
+
+TEST_CASE("type traits")
+{
+    SECTION("IsVoid")
+    {        
+    }
+
+    SECTION("IsPointer")
+    {
+    }
+
+    SECTION("Identity")
+    {
+    }
+
+    SECTION("RemoveConst")
+    {
+    }
+
+    SECTION("RemoveReference")
+    {
+    }
+}
