@@ -223,3 +223,49 @@ TEST_CASE("requires expression")
     std::set<int> my_set;
     add_to(my_set, 42);
 }
+
+template <typename T1, typename T2>
+concept Addable = requires(T1 a, T2 b) {
+    a + b;
+};
+
+
+template <typename T>
+concept LeanPointer = Pointer<T> && (sizeof(T) == sizeof(void*));
+
+static_assert(LeanPointer<int*>);
+static_assert(!LeanPointer<std::shared_ptr<int>>);
+
+struct A
+{
+    struct B
+    {};
+
+    using C = int;
+
+    typedef int D;
+};
+
+template <typename T>
+concept WithNestedTypes = requires {
+    typename T::B; // type requirements
+    typename T::C;
+    typename T::D;
+};
+
+static_assert(WithNestedTypes<A>);
+
+struct Data
+{
+    int size() const noexcept
+    {
+        return 42;
+    }
+};
+
+template <typename T>
+concept HasSize = requires(const T& obj) {
+    { obj.size() } noexcept -> std::convertible_to<size_t>; 
+};
+
+static_assert(HasSize<Data>);
