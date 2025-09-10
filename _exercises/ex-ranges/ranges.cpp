@@ -50,7 +50,7 @@ TEST_CASE("split")
 
 TEST_CASE("Exercise - ranges")
 {
-    const std::vector<std::string_view> lines = { 
+    const std::vector<std::string_view> lines = {
         "# Comment 1", /* comments can be only at the begining of a file */
         "# Comment 2",
         "# Comment 3",
@@ -62,16 +62,37 @@ TEST_CASE("Exercise - ranges")
         "5/five",
         "\n",
         "\n",
-        "6/six"
-    };
+        "6/six"};
 
     helpers::print(lines, "lines");
 
-    auto result = lines;
+    // auto result = lines
+    //     | std::views::filter([](std::string_view line) { return !line.empty() && line[0] != '#'; })
+    //     | std::views::transform([](std::string_view line) { return split(line); })
+    //     | std::views::elements<1>
+    //     | std::views::filter([](std::string_view second) { return !second.empty(); });
+
+    // auto result = lines
+    //     | std::views::filter([](auto str) { return str[0] != '#' && str[0] != '\n'; })
+    //     | std::views::transform([](auto line) { return split(line); })
+    //     | std::views::elements<1>;
+
+    // auto result = lines
+    //     | std::views::filter([](std::string_view line) { return !line.starts_with("#"); })
+    //     | std::views::transform([](std::string_view line) { return split(line, "/").second; })
+    //     | std::views::filter([](std::string_view word) { return !word.empty(); });
+
+    auto result = lines
+        | std::views::drop_while([](std::string_view sv) { return sv.starts_with("#"); })
+        | std::views::filter([](std::string_view sv) { return sv != "\n"; })
+        | std::views::transform([](auto sv) { return split(sv); })
+        | std::views::elements<1>;
 
     helpers::print(result, "result");
 
     auto expected_result = {"one"s, "two"s, "three"s, "four"s, "five"s, "six"s};
 
-    //CHECK(std::ranges::equal(result, expected_result));
+    CHECK(std::ranges::equal(result, expected_result));
+
+    std::vector vec_of_things(std::from_range, result);
 }
