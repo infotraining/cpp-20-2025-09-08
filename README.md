@@ -1,5 +1,9 @@
 # Szkolenie - C++20 #
 
+## Evaluation form
+
+* https://forms.gle/gRrGuZNbYcspwjbJ8
+
 ## Konfiguracja środowiska
 
 Proszę wybrać jedną z poniższych opcji:
